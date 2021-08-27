@@ -15,6 +15,7 @@
 #include <linux/errno.h>        /* error codes */
 #include <linux/types.h>        /* size_t */
 #include <linux/cdev.h>
+#include <linux/uaccess.h>
 
 #define BUFSIZE 512
 #define NAME "s_driver"
@@ -54,7 +55,7 @@ static int s_open(struct inode *inode, struct file *file)
  */
 static int s_release(struct inode *inode, struct file *file)
 {
-    	printk(KERN_ALERT "Device closed\n");
+    	printk(KERN_ALERT "All device's closed\n");
     	return 0;
 }
 
@@ -132,7 +133,7 @@ static int __init init_func(void)
                 printk(KERN_ALERT "Create device using mknod /dev/%s%d c %d %d\n", NAME, i, major, i);
 
                 memcpy(devs[i].buffer, MESSAGE, sizeof(MESSAGE));
-                devs[i].size = sizeof(MESSAGE);
+                devs[i].size = BUFSIZE;
 
                 cdev_init(&devs[i].cdev, &fops);
                 cdev_add(&devs[i].cdev, MKDEV(major, i), 1);
@@ -157,7 +158,7 @@ static void __exit exit_func(void)
 	
 	unregister_chrdev_region(MKDEV(major, FIRST_MINOR), NUM_MINORS);
 
-   	printk(KERN_ALERT "Module successfuly exited\n");
+   	printk(KERN_ALERT "Module successfuly unloaded\n");
 }
 
 /*
