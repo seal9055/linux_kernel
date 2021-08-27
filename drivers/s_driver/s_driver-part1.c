@@ -43,9 +43,8 @@ static int s_open(struct inode *inode, struct file *file)
 
         file->private_data = data;
 
-   	printk(KERN_ALERT "Device opened\n");
-
-   	return 0;
+        printk(KERN_ALERT "Device opened\n");
+        return 0;
 }
 
 /*
@@ -55,8 +54,8 @@ static int s_open(struct inode *inode, struct file *file)
  */
 static int s_release(struct inode *inode, struct file *file)
 {
-    	printk(KERN_ALERT "All device's closed\n");
-    	return 0;
+        printk(KERN_ALERT "All device's closed\n");
+        return 0;
 }
 
 /*
@@ -76,8 +75,8 @@ static ssize_t s_read(struct file *file, char __user *ubuf, size_t size, loff_t 
                 return -EFAULT;
         *offset += len;
 
-    	printk(KERN_ALERT "Device read\n");
-    	return len;
+        printk(KERN_ALERT "Device read\n");
+        return len;
 }
 
 /*
@@ -98,15 +97,15 @@ static ssize_t s_write(struct file *file, const char __user *ubuf, size_t size, 
         *offset += len;
         
         printk(KERN_ALERT "Device written\n");
-   	return len;
+        return len;
 }
 
 static const struct file_operations fops = {
-	.owner = THIS_MODULE,
-	.open    = s_open,
-   	.read    = s_read,
-   	.write   = s_write,
-   	.release = s_release
+        .owner = THIS_MODULE,
+        .open    = s_open,
+        .read    = s_read,
+        .write   = s_write,
+        .release = s_release
 };
 
 /*
@@ -120,14 +119,14 @@ static const struct file_operations fops = {
  */
 static int __init init_func(void)
 {
-	dev_t dev = 0;
-    	int i;
+        dev_t dev = 0;
+        int i;
 
-	if (alloc_chrdev_region(&dev, FIRST_MINOR, NUM_MINORS, NAME) < 0) { 
-		printk(KERN_WARNING "Registration failed\n");
-		return 1;
-	}
-	major = MAJOR(dev);
+        if (alloc_chrdev_region(&dev, FIRST_MINOR, NUM_MINORS, NAME) < 0) { 
+                printk(KERN_WARNING "Registration failed\n");
+                return 1;
+        }
+        major = MAJOR(dev);
 
         for (i = 0; i < NUM_MINORS; i++) {
                 printk(KERN_ALERT "Create device using mknod /dev/%s%d c %d %d\n", NAME, i, major, i);
@@ -156,9 +155,8 @@ static void __exit exit_func(void)
                 cdev_del(&devs[i].cdev);
         }
 	
-	unregister_chrdev_region(MKDEV(major, FIRST_MINOR), NUM_MINORS);
-
-   	printk(KERN_ALERT "Module successfuly unloaded\n");
+        unregister_chrdev_region(MKDEV(major, FIRST_MINOR), NUM_MINORS);
+        printk(KERN_ALERT "Module successfuly unloaded\n");
 }
 
 /*
