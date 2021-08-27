@@ -3,7 +3,7 @@
  * @author	seal9055
  * @date	26 August 2021
  * @version	1.0
- * @brief	Introductory linux character kernel driver that implements basic functionality. 
+ * @brief       Introductory linux character kernel driver that implements basic functionality. 
  *              This driver will be expanded/improved in future versions.
  *              Blogpost describing functionality at: https://seal9055.com/blog/kernel/char_driver_part-1
  */
